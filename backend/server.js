@@ -47,7 +47,9 @@ const io = require("socket.io")(server, {
   pingTimeout: 60000,
   cors: {
     origin: "https://awok-talking.netlify.app/",
-    // credentials: true,
+    methods: ["GET", "POST"],
+    allowedHeaders: ["my-custom-header"],
+    credentials: true
   },
 });
 io.on("connection", (socket) => {
