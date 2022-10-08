@@ -25,9 +25,6 @@ app.use("/api/message",messageRouter)
 const server = app.listen(PORT, console.log(`listening on http://127.0.0.1:${PORT}`.yellow.bold))
 const io = require("socket.io")(server, {
   pingTimeout: 60000,
-  cors: {
-    origin: "https://awok-talking.netlify.app/",
-  },
 });
 io.on("connection", (socket) => {
   console.log("Connected to socket.io");
