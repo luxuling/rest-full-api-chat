@@ -46,7 +46,7 @@ app.use(function (req, res, next) {
 const io = require("socket.io")(server, {
   pingTimeout: 60000,
   cors: {
-    origin: "http://localhost:3000",
+    origin: "https://awok-talking.netlify.app/",
     // credentials: true,
   },
 });
