@@ -21,11 +21,19 @@ app.use("/api/user",userRouter)
 app.use("/api/chat", chatRouter)
 app.use("/api/message",messageRouter)
 
+const http = require('http').Server(app); 
+http.listen(PORT, console.log(`listening on http://127.0.0.1:${PORT}`.yellow.bold))
 
-const server = app.listen(PORT, console.log(`listening on http://127.0.0.1:${PORT}`.yellow.bold))
-const io = require("socket.io")(server, {
+const io = require("socket.io")(http, {
   pingTimeout: 60000,
-});
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+    credentials: true, allowEIO3: true
+  },
+  transport: ["websocket"]
+}
+);
 io.on("connection", (socket) => {
   console.log("Connected to socket.io");
   socket.on("setup", (userData) => {
