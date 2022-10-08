@@ -16,6 +16,15 @@ app.use(cors())
 app.get("/", (req, res) => {
   res.send("API is running")
 })
+app.use("/api/user",userRouter)
+app.use("/api/chat", chatRouter)
+app.use("/api/message",messageRouter)
+
+const server = app.listen(
+  PORT,
+  console.log(`Server running on PORT ${PORT}...`.yellow.bold)
+);
+
 app.use(function (req, res, next) {
 
   // Website you wish to allow to connect
@@ -34,15 +43,6 @@ app.use(function (req, res, next) {
   // Pass to next layer of middleware
   next();
 });
-app.use("/api/user",userRouter)
-app.use("/api/chat", chatRouter)
-app.use("/api/message",messageRouter)
-
-const server = app.listen(
-  PORT,
-  console.log(`Server running on PORT ${PORT}...`.yellow.bold)
-);
-
 const io = require("socket.io")(server, {
   pingTimeout: 60000,
   cors: {
