@@ -1,4 +1,5 @@
 const express = require("express")
+const cors = require("cors")
 const dotenv = require("dotenv")
 const getMongo = require("./config/db")
 const { yellow } = require("colors")
@@ -11,7 +12,7 @@ const PORT = process.env.PORT || 5000
 
 dotenv.config()
 getMongo()
-
+app.use(cors())
 app.get("/", (req, res) => {
   res.send("API is running")
 })
