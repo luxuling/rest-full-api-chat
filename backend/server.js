@@ -2,23 +2,23 @@ const express = require("express")
 const dotenv = require("dotenv")
 const getMongo = require("./config/db")
 const { yellow } = require("colors")
+const cors = require("cors")
 
 const { Server } = require("socket.io");
 const { createServer } = require("http");
 
-
-const app = express()
-const httpServer = createServer(app);
-
 dotenv.config()
 getMongo()
-
+const app = express()
+const httpServer = createServer(app);
 app.use(express.json())
+
+
+app.use(cors())
 const userRouter = require("./routes/userRouter")
 const chatRouter = require("./routes/chatRouter")
 const messageRouter  =require("./routes/messageRouter")
 const PORT = process.env.PORT || 5000
-
 
 // const io = require("socket.io")(http, {
 //   pingTimeout: 60000,
@@ -26,13 +26,6 @@ const PORT = process.env.PORT || 5000
 //     origin: ["https://awok-talking.netlify.app"],
 //   },
 // });
-
-const io = new Server(httpServer, {
-  cors: {
-    origin: ["https://awok-talking.netlify.app"]
-  }
-});
-
 
 app.get("/", (req, res) => {
   res.send("API is running")
@@ -43,6 +36,13 @@ app.use("/api/message",messageRouter)
 
 httpServer.listen(PORT, function () {
   console.log(`Server running on PORT ${PORT}...`.yellow.bold)
+})
+
+const io = new Server(httpServer, {
+  cors: {
+    origin: ["https://awok-talking.netlify.app"],
+    credentials: true,
+  }
 })
 
 io.on("connection", (socket) => {
